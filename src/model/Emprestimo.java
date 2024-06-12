@@ -3,13 +3,13 @@ package model;
 import java.io.Serializable;
 import java.time.LocalDate;
 
-public class Emprestimo implements Serializable {
+public class Emprestimo implements Serializable{
     private Usuario usuario;
     private Livro livro;
     private LocalDate dataEmprestimo;
     private LocalDate dataDevolucaoPrevista;
 
-    public Emprestimo(Usuario usuario, Livro livro, LocalDate dataEmprestimo, LocalDate dataDevolucaoPrevista) {
+    public Emprestimo(Usuario usuario, Livro livro, LocalDate dataEmprestimo, LocalDate dataDevolucaoPrevista){
         this.usuario = usuario;
         this.livro = livro;
         this.dataEmprestimo = dataEmprestimo;
@@ -17,35 +17,35 @@ public class Emprestimo implements Serializable {
     }
 
     // Getters e Setters
-    public Usuario getUsuario() {
+    public Usuario getUsuario(){
         return usuario;
     }
 
-    public void setUsuario(Usuario usuario) {
+    public void setUsuario(Usuario usuario){
         this.usuario = usuario;
     }
 
-    public Livro getLivro() {
+    public Livro getLivro(){
         return livro;
     }
 
-    public void setLivro(Livro livro) {
+    public void setLivro(Livro livro){
         this.livro = livro;
     }
 
-    public LocalDate getDataEmprestimo() {
+    public LocalDate getDataEmprestimo(){
         return dataEmprestimo;
     }
 
-    public void setDataEmprestimo(LocalDate dataEmprestimo) {
+    public void setDataEmprestimo(LocalDate dataEmprestimo){
         this.dataEmprestimo = dataEmprestimo;
     }
 
-    public LocalDate getDataDevolucaoPrevista() {
+    public LocalDate getDataDevolucaoPrevista(){
         return dataDevolucaoPrevista;
     }
 
-    public void setDataDevolucaoPrevista(LocalDate dataDevolucaoPrevista) {
+    public void setDataDevolucaoPrevista(LocalDate dataDevolucaoPrevista){
         this.dataDevolucaoPrevista = dataDevolucaoPrevista;
     }
 }

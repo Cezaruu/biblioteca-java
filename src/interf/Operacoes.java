@@ -1,12 +1,11 @@
 package interf;
 
 import java.util.List;
-
-import model.Usuario;
-import model.Livro;
 import model.Emprestimo;
+import model.Livro;
+import model.Usuario;
 
-public interface Operacoes {
+public interface Operacoes{
     void adicionarLivro(Livro livro);
 
     void removerLivro(Livro livro);
