@@ -16,4 +16,5 @@ public interface Operacoes{
     List<Emprestimo> listarEmprestimosAtivos(Usuario usuario);
     void adicionarEmprestimo(Emprestimo emprestimo) throws Exception;
     void devolverLivro(Usuario usuario, Livro livro) throws Exception;
+    
 }

@@ -38,4 +38,5 @@ public abstract class Usuario implements Serializable{
     public void setDataNascimento(LocalDate dataNascimento){
         this.dataNascimento = dataNascimento;
     }
+    
 }

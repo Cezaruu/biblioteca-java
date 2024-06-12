@@ -30,8 +30,8 @@ public class BibliotecaController implements Operacoes{
     }
     @Override
     public Livro pesquisarLivroPorTitulo(String titulo){
-        for (Livro livro : bancoDAO.getLivros()) {
-            if (livro.getTitulo().equalsIgnoreCase(titulo)){
+        for (Livro livro : bancoDAO.getLivros()){
+            if(livro.getTitulo().equalsIgnoreCase(titulo)){
                 return livro;
             }
         }
@@ -40,8 +40,8 @@ public class BibliotecaController implements Operacoes{
     @Override
     public List<Livro> pesquisarLivrosPorAutor(String autor){
         List<Livro> livrosPorAutor = new ArrayList<>();
-        for (Livro livro : bancoDAO.getLivros()) {
-            if (livro.getAutor().equalsIgnoreCase(autor)){
+        for(Livro livro : bancoDAO.getLivros()){
+            if(livro.getAutor().equalsIgnoreCase(autor)){
                 livrosPorAutor.add(livro);
             }
         }
@@ -58,7 +58,7 @@ public class BibliotecaController implements Operacoes{
     @Override
     public Usuario verificarSituacaoUsuario(String cpf){
         for (Usuario usuario : bancoDAO.getUsuarios()){
-            if (usuario.getCpf().equals(cpf)){
+            if(usuario.getCpf().equals(cpf)){
                 return usuario;
             }
         }
@@ -67,8 +67,8 @@ public class BibliotecaController implements Operacoes{
     @Override
     public List<Emprestimo> listarEmprestimosAtivos(Usuario usuario){
         List<Emprestimo> emprestimosDoUsuario = new ArrayList<>();
-        for (Emprestimo emprestimo : bancoDAO.getEmprestimosAtivos()){
-            if (emprestimo.getUsuario().equals(usuario)){
+        for(Emprestimo emprestimo : bancoDAO.getEmprestimosAtivos()){
+            if(emprestimo.getUsuario().equals(usuario)){
                 emprestimosDoUsuario.add(emprestimo);
             }
         }
@@ -76,13 +76,13 @@ public class BibliotecaController implements Operacoes{
     }
     @Override
     public void adicionarEmprestimo(Emprestimo emprestimo) throws Exception{
-        for (Emprestimo e : bancoDAO.getEmprestimosAtivos()){
-            if (e.getLivro().equals(emprestimo.getLivro())){
+        for(Emprestimo e : bancoDAO.getEmprestimosAtivos()){
+            if(e.getLivro().equals(emprestimo.getLivro())){
                 throw new LivrosEmprestado("O livro já está emprestado.");
             }
         }
         Livro livro = emprestimo.getLivro();
-        if (livro.getQtdEstoque() <= 0){
+        if(livro.getQtdEstoque() <= 0){
             throw new Exception("Não há exemplares disponíveis para empréstimo.");
         }
         livro.setQtdEstoque(livro.getQtdEstoque() - 1);
@@ -93,11 +93,11 @@ public class BibliotecaController implements Operacoes{
         int maxLivros;
         int diasEmprestimo;
 
-        if (usuario instanceof Estudante){
+        if(usuario instanceof Estudante){
             maxLivros = 3;
             diasEmprestimo = 15;
         } 
-        else if (usuario instanceof Professor || usuario instanceof Bibliotecario){
+        else if(usuario instanceof Professor || usuario instanceof Bibliotecario){
             maxLivros = 5;
             diasEmprestimo = 30;
         } 
@@ -105,7 +105,7 @@ public class BibliotecaController implements Operacoes{
             throw new Exception("Tipo de usuário não permitido para empréstimo.");
         }
 
-        if (emprestimosAtivos.size() >= maxLivros){
+        if(emprestimosAtivos.size() >= maxLivros){
             throw new EmprestimosExcedidos("Usuário atingiu o limite de livros emprestados.");
         }
         Emprestimo emprestimo = new Emprestimo(usuario, livro, LocalDate.now(), LocalDate.now().plusDays(diasEmprestimo));
@@ -121,7 +121,7 @@ public class BibliotecaController implements Operacoes{
             }
         }
 
-        if (emprestimoParaRemover == null) {
+        if(emprestimoParaRemover == null){
             throw new Exception("O livro não está emprestado por este usuário.");
         }
 

@@ -81,7 +81,6 @@ public class Main{
                 case "devolver livro":
                     devolverLivro(controller, input);
                     break;
-
                 case "remover usuario":
                     removerUsuario(controller, input);
                     break;
@@ -144,19 +143,19 @@ public class Main{
         System.out.println("Digite o título do livro: ");
         String titulo = input.nextLine();
         Usuario usuario = controller.verificarSituacaoUsuario(cpf);
-        if (usuario == null) {
+        if(usuario == null) {
             System.out.println("\nUsuário não encontrado.\n");
             return;
         }
         Livro livro = controller.pesquisarLivroPorTitulo(titulo);
-        if (livro == null) {
+        if(livro == null) {
             System.out.println("\nLivro não encontrado.\n");
             return;
         }
-        try {
+        try{
             controller.devolverLivro(usuario, livro);
             System.out.println("\nLivro devolvido com sucesso.\n");
-        } catch (Exception e) {
+        }catch (Exception e) {
             System.out.println("\nErro ao devolver livro: " + e.getMessage() + "\n");
         }
     }
@@ -180,7 +179,7 @@ public class Main{
     private static void listarLivros(BibliotecaController controller){
         System.out.println("\n");
         List<Livro> livros = controller.listarTodosLivros();
-        if (livros.isEmpty()){
+        if(livros.isEmpty()){
             System.out.println("\nNenhum livro cadastrado.\n");
         } 
         else{
@@ -193,12 +192,12 @@ public class Main{
     private static void listarUsuarios(BibliotecaController controller){
         System.out.println("\n");
         List<Usuario> usuarios = controller.listarTodosUsuarios();
-        if (usuarios.isEmpty()){
+        if(usuarios.isEmpty()){
             System.out.println("\nNenhum usuário cadastrado.\n");
         } 
         else{
             System.out.println("\nUsuário cadastrado:\n");
-            for (Usuario usuario : usuarios){
+            for(Usuario usuario : usuarios){
                 System.out.println(usuario.getNome() + " - " + usuario.getCpf());
             }
         }
@@ -210,12 +209,12 @@ public class Main{
         System.out.println("Digite o título do livro: ");
         String titulo = input.nextLine();
         Usuario usuario = controller.verificarSituacaoUsuario(cpf);
-        if (usuario == null){
+        if(usuario == null){
             System.out.println("\nUsuário não encontrado.\n");
             return;
         }
         Livro livro = controller.pesquisarLivroPorTitulo(titulo);
-        if (livro == null){
+        if(livro == null){
             System.out.println("\nLivro não encontrado.\n");
             return;
         }
@@ -223,10 +222,10 @@ public class Main{
             controller.emprestarLivro(usuario, livro);
             System.out.println("\nEmpréstimo realizado com sucesso.\n");
         } 
-        catch (LivrosEmprestado | EmprestimosExcedidos e){
+        catch(LivrosEmprestado | EmprestimosExcedidos e){
             System.out.println(e.getMessage());
         } 
-        catch (Exception e){
+        catch(Exception e){
             System.out.println("\nErro ao realizar empréstimo: " + e.getMessage());
         }
     }
@@ -235,7 +234,7 @@ public class Main{
         System.out.println("Digite o título do livro que deseja remover: ");
         String titulo = input.nextLine();
         Livro livro = controller.pesquisarLivroPorTitulo(titulo);
-        if (livro == null){
+        if(livro == null){
             System.out.println("\nLivro não encontrado.\n");
             return;
         }
@@ -247,7 +246,7 @@ public class Main{
         System.out.println("Digite o CPF do usuário que deseja remover: ");
         String cpf = input.nextLine();
         Usuario usuario = controller.verificarSituacaoUsuario(cpf);
-        if (usuario == null){
+        if(usuario == null){
             System.out.println("\nUsuário não encontrado.\n");
             return;
         }

@@ -14,4 +14,5 @@ public class Professor extends Usuario{
     public void setDepartamento(String departamento){
         this.departamento = departamento;
     }
+    
 }

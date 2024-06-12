@@ -57,4 +57,5 @@ public class BancoDAO{
     public List<Emprestimo> getEmprestimosAtivos(){
         return emprestimosAtivos;
     }
+    
 }

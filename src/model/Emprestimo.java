@@ -38,4 +38,5 @@ public class Emprestimo implements Serializable{
     public void setDataDevolucaoPrevista(LocalDate dataDevolucaoPrevista){
         this.dataDevolucaoPrevista = dataDevolucaoPrevista;
     }
+    
 }
