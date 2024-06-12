@@ -1,8 +1,8 @@
 package controller;
 
 import dao.BancoDAO;
-import exception.LivroJaEmprestadoException;
-import exception.UsuarioComEmprestimosExcedidosException;
+import exception.EmprestimosExcedidos;
+import exception.LivrosEmprestado;
 import interf.Operacoes;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -17,21 +17,17 @@ import model.Usuario;
 public class BibliotecaController implements Operacoes{
     public final BancoDAO bancoDAO;
     private Bibliotecario bibliotecario;
-
     public BibliotecaController(){
         this.bancoDAO = BancoDAO.getInstance();
     }
-
     @Override
     public void adicionarLivro(Livro livro){
         bancoDAO.adicionarLivro(livro);
     }
-
     @Override
     public void removerLivro(Livro livro){
         bancoDAO.getLivros().remove(livro);
     }
-
     @Override
     public Livro pesquisarLivroPorTitulo(String titulo){
         for (Livro livro : bancoDAO.getLivros()) {
@@ -41,7 +37,6 @@ public class BibliotecaController implements Operacoes{
         }
         return null;
     }
-
     @Override
     public List<Livro> pesquisarLivrosPorAutor(String autor){
         List<Livro> livrosPorAutor = new ArrayList<>();
@@ -52,17 +47,14 @@ public class BibliotecaController implements Operacoes{
         }
         return livrosPorAutor;
     }
-
     @Override
     public void adicionarUsuario(Usuario usuario){
         bancoDAO.adicionarUsuario(usuario);
     }
-
     @Override
     public void removerUsuario(Usuario usuario){
         bancoDAO.getUsuarios().remove(usuario);
     }
-
     @Override
     public Usuario verificarSituacaoUsuario(String cpf){
         for (Usuario usuario : bancoDAO.getUsuarios()){
@@ -71,8 +63,7 @@ public class BibliotecaController implements Operacoes{
             }
         }
         return null;
-    }
-    
+    }  
     @Override
     public List<Emprestimo> listarEmprestimosAtivos(Usuario usuario){
         List<Emprestimo> emprestimosDoUsuario = new ArrayList<>();
@@ -83,12 +74,11 @@ public class BibliotecaController implements Operacoes{
         }
         return emprestimosDoUsuario;
     }
-
     @Override
     public void adicionarEmprestimo(Emprestimo emprestimo) throws Exception{
         for (Emprestimo e : bancoDAO.getEmprestimosAtivos()){
             if (e.getLivro().equals(emprestimo.getLivro())){
-                throw new LivroJaEmprestadoException("O livro já está emprestado.");
+                throw new LivrosEmprestado("O livro já está emprestado.");
             }
         }
         Livro livro = emprestimo.getLivro();
@@ -98,39 +88,38 @@ public class BibliotecaController implements Operacoes{
         livro.setQtdEstoque(livro.getQtdEstoque() - 1);
         bancoDAO.adicionarEmprestimo(emprestimo);
     }    
-
     public void emprestarLivro(Usuario usuario, Livro livro) throws Exception{
         List<Emprestimo> emprestimosAtivos = listarEmprestimosAtivos(usuario);
-
         int maxLivros;
         int diasEmprestimo;
 
         if (usuario instanceof Estudante){
             maxLivros = 3;
             diasEmprestimo = 15;
-        } else if (usuario instanceof Professor || usuario instanceof Bibliotecario){
+        } 
+        else if (usuario instanceof Professor || usuario instanceof Bibliotecario){
             maxLivros = 5;
             diasEmprestimo = 30;
-        } else{
+        } 
+        else{
             throw new Exception("Tipo de usuário não permitido para empréstimo.");
         }
 
         if (emprestimosAtivos.size() >= maxLivros){
-            throw new UsuarioComEmprestimosExcedidosException("Usuário atingiu o limite de livros emprestados.");
+            throw new EmprestimosExcedidos("Usuário atingiu o limite de livros emprestados.");
         }
-
         Emprestimo emprestimo = new Emprestimo(usuario, livro, LocalDate.now(), LocalDate.now().plusDays(diasEmprestimo));
         adicionarEmprestimo(emprestimo);
     }
-
     public List<Livro> listarTodosLivros(){
         return bancoDAO.getLivros();
     }
-
+    public List<Usuario> listarTodosUsuarios(){
+        return bancoDAO.getUsuarios();
+    }    
     public void setBibliotecario(Bibliotecario bibliotecario){
         this.bibliotecario = bibliotecario;
     }
-
     public Bibliotecario getBibliotecario(){
         return bibliotecario;
     }

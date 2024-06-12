@@ -8,7 +8,6 @@ public class Persistencia{
             oos.writeObject(objeto);
         }
     }
-
     public static Object carregarObjeto(String caminho) throws IOException, ClassNotFoundException{
         try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(caminho))){
             return ois.readObject();

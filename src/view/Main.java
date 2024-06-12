@@ -1,8 +1,8 @@
 package view;
 
 import controller.BibliotecaController;
-import exception.LivroJaEmprestadoException;
-import exception.UsuarioComEmprestimosExcedidosException;
+import exception.EmprestimosExcedidos;
+import exception.LivrosEmprestado;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Scanner;
@@ -31,39 +31,31 @@ public class Main{
 
         signIn(new Bibliotecario("Paulo Cezar", "12345678901", "1234", LocalDate.of(2003, 11, 20), "paulo", "senha123"), controller);
     }
-
     private static void signIn(Bibliotecario bibliotecario, BibliotecaController controller){
         String usuario;
         String senha;
         try (Scanner input = new Scanner(System.in)){
             System.out.println(" --- Login Bibliotecário --- ");
-
             System.out.print("Login: ");
             usuario = input.nextLine();
-
             while (!usuario.equals(bibliotecario.getLogin())){
                 System.out.print("Digite corretamente o login: ");
                 usuario = input.nextLine();
             }
-
             System.out.print("Senha: ");
             senha = input.nextLine();
-
             while (!senha.equals(bibliotecario.getSenha())){
                 System.out.print("Digite corretamente a senha: ");
                 senha = input.nextLine();
             }
-
-            System.out.println("Login bem-sucedido!");
+            System.out.println("\nLogin bem-sucedido!\n");
             realizarOperacoes(controller, input);
         }
     }
-
     private static void realizarOperacoes(BibliotecaController controller, Scanner input){
         while (true){
-            System.out.println("Digite um comando (help para ver as opções, exit para sair): ");
+            System.out.println("Digite um comando (help para ver as opções, exit para sair): \n");
             String comando = input.nextLine().trim().toLowerCase();
-
             switch (comando){
                 case "help":
                     mostrarOpcoes();
@@ -90,17 +82,17 @@ public class Main{
                     removerUsuario(controller, input);
                     break;
                 case "exit":
-                    System.out.println("Saindo...");
+                    System.out.println("\nSaindo...\n");
                     return;
                 default:
-                    System.out.println("Comando não reconhecido.");
+                    System.out.println("\nComando não reconhecido.\n");
                     break;
             }
         }
     }
-
     private static void mostrarOpcoes(){
-        System.out.println("Opções disponíveis:");
+        System.out.println("\n");
+        System.out.println("Opções disponíveis:\n");
         System.out.println("adicionar usuario - Adicionar um novo usuário");
         System.out.println("adicionar livro - Adicionar um novo livro");
         System.out.println("listar livros - Listar todos os livros");
@@ -109,8 +101,8 @@ public class Main{
         System.out.println("remover livro - Remover um livro pelo título");
         System.out.println("remover usuario - Remover um usuário pelo CPF");
     }
-
     private static void adicionarUsuario(BibliotecaController controller, Scanner input){
+        System.out.println("\n");
         System.out.println("Digite o nome do usuário: ");
         String nome = input.nextLine();
         System.out.println("Digite o CPF do usuário: ");
@@ -119,32 +111,29 @@ public class Main{
         String matricula = input.nextLine();
         System.out.println("Digite a data de nascimento (YYYY-MM-DD): ");
         LocalDate dataNascimento = LocalDate.parse(input.nextLine());
-
         System.out.println("Tipo de usuário (estudante/professor): ");
         String tipo = input.nextLine().toLowerCase();
-
         Usuario usuario;
         switch (tipo){
             case "estudante":
-                System.out.println("Digite o curso: ");
+                System.out.println("Digite o curso:");
                 String curso = input.nextLine();
                 usuario = new Estudante(nome, cpf, matricula, dataNascimento, curso);
                 break;
             case "professor":
-                System.out.println("Digite o departamento: ");
+                System.out.println("Digite o departamento:");
                 String departamento = input.nextLine();
                 usuario = new Professor(nome, cpf, matricula, dataNascimento, departamento);
                 break;
             default:
-                System.out.println("Tipo de usuário inválido.");
+                System.out.println("\nTipo de usuário inválido.\n");
                 return;
         }
-
         controller.adicionarUsuario(usuario);
-        System.out.println("Usuário adicionado com sucesso.");
+        System.out.println("\nUsuário adicionado com sucesso.\n");
     }
-
     private static void adicionarLivro(BibliotecaController controller, Scanner input){
+        System.out.println("\n");
         System.out.println("Digite o título do livro: ");
         String titulo = input.nextLine();
         System.out.println("Digite o autor do livro: ");
@@ -153,89 +142,87 @@ public class Main{
         String genero = input.nextLine();
         System.out.println("Digite o ano de publicação: ");
         int anoPublicacao = Integer.parseInt(input.nextLine());
-        System.out.println("Digite a quantidade disponível: ");
+        System.out.println("Digite a quantidade disponível: \n");
         int quantidade = Integer.parseInt(input.nextLine());
-
         Livro livro = new Livro(titulo, autor, genero, anoPublicacao, quantidade);
         controller.adicionarLivro(livro);
-        System.out.println("Livro adicionado com sucesso.");
+        System.out.println("\nLivro adicionado com sucesso.\n");
     }
-
     private static void listarLivros(BibliotecaController controller){
+        System.out.println("\n");
         List<Livro> livros = controller.listarTodosLivros();
         if (livros.isEmpty()){
-            System.out.println("Nenhum livro cadastrado.");
-        } else {
-            System.out.println("Livros cadastrados:");
+            System.out.println("\nNenhum livro cadastrado.\n");
+        } 
+        else{
+            System.out.println("Livro cadastrado: \n");
             for (Livro livro : livros){
                 System.out.println(livro.getTitulo() + " por: " + livro.getAutor());
             }
         }
     }    
-
     private static void listarUsuarios(BibliotecaController controller){
-        List<Usuario> usuarios = controller.bancoDAO.getUsuarios();
+        System.out.println("\n");
+        List<Usuario> usuarios = controller.listarTodosUsuarios();
         if (usuarios.isEmpty()){
-            System.out.println("Nenhum usuário cadastrado.");
-        } else{
-            System.out.println("Usuários cadastrados:");
+            System.out.println("\nNenhum usuário cadastrado.\n");
+        } 
+        else{
+            System.out.println("\nUsuário cadastrado:\n");
             for (Usuario usuario : usuarios){
                 System.out.println(usuario.getNome() + " - " + usuario.getCpf());
             }
         }
-    }
-
+    }    
     private static void realizarEmprestimo(BibliotecaController controller, Scanner input){
+        System.out.println("\n");
         System.out.println("Digite o CPF do usuário: ");
         String cpf = input.nextLine();
         System.out.println("Digite o título do livro: ");
         String titulo = input.nextLine();
-
         Usuario usuario = controller.verificarSituacaoUsuario(cpf);
         if (usuario == null){
-            System.out.println("Usuário não encontrado.");
+            System.out.println("\nUsuário não encontrado.\n");
             return;
         }
-
         Livro livro = controller.pesquisarLivroPorTitulo(titulo);
         if (livro == null){
-            System.out.println("Livro não encontrado.");
+            System.out.println("\nLivro não encontrado.\n");
             return;
         }
-
         try{
             controller.emprestarLivro(usuario, livro);
-            System.out.println("Empréstimo realizado com sucesso.");
-        } catch (LivroJaEmprestadoException | UsuarioComEmprestimosExcedidosException e){
+            System.out.println("\nEmpréstimo realizado com sucesso.\n");
+        } 
+        catch (LivrosEmprestado | EmprestimosExcedidos e){
             System.out.println(e.getMessage());
-        } catch (Exception e){
-            System.out.println("Erro ao realizar empréstimo: " + e.getMessage());
+        } 
+        catch (Exception e){
+            System.out.println("\nErro ao realizar empréstimo: " + e.getMessage());
         }
     }
-
     private static void removerLivro(BibliotecaController controller, Scanner input){
+        System.out.println("\n");
         System.out.println("Digite o título do livro que deseja remover: ");
         String titulo = input.nextLine();
         Livro livro = controller.pesquisarLivroPorTitulo(titulo);
         if (livro == null){
-            System.out.println("Livro não encontrado.");
+            System.out.println("\nLivro não encontrado.\n");
             return;
         }
-
         controller.removerLivro(livro);
-        System.out.println("Livro removido com sucesso.");
+        System.out.println("\nLivro removido com sucesso.\n");
     }
-
     private static void removerUsuario(BibliotecaController controller, Scanner input){
+        System.out.println("\n");
         System.out.println("Digite o CPF do usuário que deseja remover: ");
         String cpf = input.nextLine();
         Usuario usuario = controller.verificarSituacaoUsuario(cpf);
         if (usuario == null){
-            System.out.println("Usuário não encontrado.");
+            System.out.println("\nUsuário não encontrado.\n");
             return;
         }
-
         controller.removerUsuario(usuario);
-        System.out.println("Usuário removido com sucesso.");
+        System.out.println("\nUsuário removido com sucesso.\n");
     }
 }
