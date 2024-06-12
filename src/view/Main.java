@@ -78,6 +78,10 @@ public class Main{
                 case "remover livro":
                     removerLivro(controller, input);
                     break;
+                case "devolver livro":
+                    devolverLivro(controller, input);
+                    break;
+
                 case "remover usuario":
                     removerUsuario(controller, input);
                     break;
@@ -98,8 +102,9 @@ public class Main{
         System.out.println("listar livros - Listar todos os livros");
         System.out.println("listar usuarios - Listar todos os usuários");
         System.out.println("realizar emprestimo - Realizar empréstimo de um livro");
+        System.out.println("devolver livro - Realizar a Devolução de um livro");
         System.out.println("remover livro - Remover um livro pelo título");
-        System.out.println("remover usuario - Remover um usuário pelo CPF");
+        System.out.println("remover usuario - Remover um usuário pelo CPF\n");
     }
     private static void adicionarUsuario(BibliotecaController controller, Scanner input){
         System.out.println("\n");
@@ -132,6 +137,30 @@ public class Main{
         controller.adicionarUsuario(usuario);
         System.out.println("\nUsuário adicionado com sucesso.\n");
     }
+    private static void devolverLivro(BibliotecaController controller, Scanner input) {
+        System.out.println("\n");
+        System.out.println("Digite o CPF do usuário: ");
+        String cpf = input.nextLine();
+        System.out.println("Digite o título do livro: ");
+        String titulo = input.nextLine();
+        Usuario usuario = controller.verificarSituacaoUsuario(cpf);
+        if (usuario == null) {
+            System.out.println("\nUsuário não encontrado.\n");
+            return;
+        }
+        Livro livro = controller.pesquisarLivroPorTitulo(titulo);
+        if (livro == null) {
+            System.out.println("\nLivro não encontrado.\n");
+            return;
+        }
+        try {
+            controller.devolverLivro(usuario, livro);
+            System.out.println("\nLivro devolvido com sucesso.\n");
+        } catch (Exception e) {
+            System.out.println("\nErro ao devolver livro: " + e.getMessage() + "\n");
+        }
+    }
+    
     private static void adicionarLivro(BibliotecaController controller, Scanner input){
         System.out.println("\n");
         System.out.println("Digite o título do livro: ");

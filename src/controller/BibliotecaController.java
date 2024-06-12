@@ -111,6 +111,23 @@ public class BibliotecaController implements Operacoes{
         Emprestimo emprestimo = new Emprestimo(usuario, livro, LocalDate.now(), LocalDate.now().plusDays(diasEmprestimo));
         adicionarEmprestimo(emprestimo);
     }
+    @Override
+    public void devolverLivro(Usuario usuario, Livro livro) throws Exception {
+        Emprestimo emprestimoParaRemover = null;
+        for (Emprestimo emprestimo : bancoDAO.getEmprestimosAtivos()) {
+            if (emprestimo.getUsuario().equals(usuario) && emprestimo.getLivro().equals(livro)) {
+                emprestimoParaRemover = emprestimo;
+                break;
+            }
+        }
+
+        if (emprestimoParaRemover == null) {
+            throw new Exception("O livro não está emprestado por este usuário.");
+        }
+
+        bancoDAO.getEmprestimosAtivos().remove(emprestimoParaRemover);
+        livro.setQtdEstoque(livro.getQtdEstoque() + 1);
+    }
     public List<Livro> listarTodosLivros(){
         return bancoDAO.getLivros();
     }
