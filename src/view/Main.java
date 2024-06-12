@@ -137,7 +137,7 @@ public class Main{
         controller.adicionarUsuario(usuario);
         System.out.println("\nUsuário adicionado com sucesso.\n");
     }
-    private static void devolverLivro(BibliotecaController controller, Scanner input) {
+    private static void devolverLivro(BibliotecaController controller, Scanner input){
         System.out.println("\n");
         System.out.println("Digite o CPF do usuário: ");
         String cpf = input.nextLine();
