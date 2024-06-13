@@ -1,4 +1,4 @@
-Apresentação
+Apresentação do Codigo
 
 Este sistema de biblioteca é projetado para controlar o empréstimo de livros em instituições acadêmicas. Além de permitir a adição, remoção, devoluçao e pesquisa de livros e usuários, ele também permite que você controle o empréstimo de livros.A seguir estão as classes principais do sistema, bem como suas funcionalidades e como os usuários podem usá-lo.
 
